@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processando Vídeo - Football Vision Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 2rem;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        .processing-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        .progress {
+            height: 2rem;
+        }
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            background-color: #343a40;
+            color: white;
+        }
+        #status-message {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        .processing-steps {
+            margin-top: 2rem;
+        }
+        .step {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .step-pending {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        .step-active {
+            background-color: #cff4fc;
+            color: #055160;
+        }
+        .step-completed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center">
+            <h1>Football Vision Analytics</h1>
+            <p class="lead">Processando seu vídeo</p>
+        </div>
+
+        <div class="processing-container">
+            <h2 class="text-center mb-4">Análise em Andamento</h2>
+            
+            <div class="progress mb-3">
+                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%"></div>
+            </div>
+            
+            <p id="status-message" class="text-center">Iniciando processamento do vídeo...</p>
+            
+            <div class="processing-steps">
+                <div id="step-1" class="step step-active">
+                    <strong>Etapa 1:</strong> Carregando vídeo e inicializando análise
+                </div>
+                <div id="step-2" class="step step-pending">
+                    <strong>Etapa 2:</strong> Detectando jogadores e bola
+                </div>
+                <div id="step-3" class="step step-pending">
+                    <strong>Etapa 3:</strong> Rastreando movimentos e calculando métricas
+                </div>
+                <div id="step-4" class="step step-pending">
+                    <strong>Etapa 4:</strong> Gerando visualizações e relatório final
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <div id="loading-spinner" class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>Football Vision Analytics &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filename = "{{ filename }}";
+            const progressBar = document.getElementById('progress-bar');
+            const statusMessage = document.getElementById('status-message');
+            const step1 = document.getElementById('step-1');
+            const step2 = document.getElementById('step-2');
+            const step3 = document.getElementById('step-3');
+            const step4 = document.getElementById('step-4');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            // Simular progresso para o MVP
+            // Na implementação real, isso seria substituído por atualizações do servidor
+            let progress = 0;
+            
+            // Iniciar o processamento
+            fetch('/analyze/' + filename, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Redirecionar para a página de resultados quando concluído
+                window.location.href = '/results/' + data.id;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                statusMessage.textContent = 'Erro ao processar o vídeo. Por favor, tente novamente.';
+                statusMessage.classList.add('text-danger');
+                loadingSpinner.style.display = 'none';
+            });
+            
+            // Simular progresso enquanto o processamento ocorre no servidor
+            const progressInterval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+                
+                if (progress === 10) {
+                    step1.classList.remove('step-active');
+                    step1.classList.add('step-completed');
+                    step2.classList.remove('step-pending');
+                    step2.classList.add('step-active');
+                    statusMessage.textContent = 'Detectando jogadores e bola...';
+                } else if (progress === 40) {
+                    step2.classList.remove('step-active');
+                    step2.classList.add('step-completed');
+                    step3.classList.remove('step-pending');
+                    step3.classList.add('step-active');
+                    statusMessage.textContent = 'Rastreando movimentos e calculando métricas...';
+                } else if (progress === 70) {
+                    step3.classList.remove('step-active');
+                    step3.classList.add('step-completed');
+                    step4.classList.remove('step-pending');
+                    step4.classList.add('step-active');
+                    statusMessage.textContent = 'Gerando visualizações e relatório final...';
+                } else if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    step4.classList.remove('step-active');
+                    step4.classList.add('step-completed');
+                    statusMessage.textContent = 'Processamento concluído! Redirecionando...';
+                }
+            }, 300);
+        });
+    </script>
+</body>
+</html>

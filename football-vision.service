@@ -1,0 +1,13 @@
+[Unit]
+Description=Football Vision Analytics
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/football-vision-analytics
+ExecStart=/home/ubuntu/football-vision-analytics/venv/bin/python run.py
+Restart=always
+Environment="PYTHONPATH=/home/ubuntu/football-vision-analytics"
+
+[Install]
+WantedBy=multi-user.target
