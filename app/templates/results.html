@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Análise - Football Vision Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        .results-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            background-color: #343a40;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .team-1 {
+            color: #0d6efd;
+        }
+        .team-2 {
+            color: #dc3545;
+        }
+        .frames-gallery {
+            margin-top: 2rem;
+        }
+        .frame-thumbnail {
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 1rem;
+        }
+        .frame-thumbnail:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center">
+            <h1>Football Vision Analytics</h1>
+            <p class="lead">Resultados da Análise</p>
+        </div>
+
+        <div class="results-container">
+            <h2 class="text-center mb-4">Métricas do Jogo</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="video-container">
+                        <video id="output-video" controls>
+                            <source src="{{ output_video }}" type="video/mp4">
+                            Seu navegador não suporta o elemento de vídeo.
+                        </video>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container">
+                        <canvas id="possessionChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="metricsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+                <div class="col">
+                    <div class="card h-100 metric-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Posse de Bola</h5>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <h3 class="team-1" id="possession-team1">0%</h3>
+                                    <p>Time 1</p>
+                                </div>
+                                <div>
+                                    <h3 class="team-2" id="possession-team2">0%</h3>
+                                    <p>Time 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 metric-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Passes</h5>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <h3 class="team-1" id="passes-team1">0</h3>
+                                    <p>Time 1</p>
+                                </div>
+                                <div>
+                                    <h3 class="team-2" id="passes-team2">0</h3>
+                                    <p>Time 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 metric-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Chutes a Gol</h5>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <h3 class="team-1" id="shots-team1">0</h3>
+                                    <p>Time 1</p>
+                                </div>
+                                <div>
+                                    <h3 class="team-2" id="shots-team2">0</h3>
+                                    <p>Time 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 metric-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Gols</h5>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <h3 class="team-1" id="goals-team1">0</h3>
+                                    <p>Time 1</p>
+                                </div>
+                                <div>
+                                    <h3 class="team-2" id="goals-team2">0</h3>
+                                    <p>Time 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="mt-5 mb-3">Momentos Importantes</h3>
+            <div class="frames-gallery">
+                <div class="row" id="frames-container">
+                    <!-- Frames serão adicionados aqui via JavaScript -->
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="/" class="btn btn-success btn-lg">Analisar Outro Vídeo</a>
+                <button id="download-report" class="btn btn-outline-success btn-lg ms-2">Baixar Relatório</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>Football Vision Analytics &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultId = "{{ result_id }}";
+            
+            // Simular dados para o MVP
+            // Na implementação real, esses dados viriam do servidor
+            const resultData = {
+                metrics: {
+                    ball_possession: {team1: 55, team2: 45},
+                    passes: {team1: 245, team2: 198},
+                    shots: {team1: 12, team2: 9},
+                    goals: {team1: 2, team2: 1}
+                },
+                frames_processed: 300,
+                duration: 15.5,
+                output_video: '/static/results/' + resultId + '/output.mp4',
+                charts: [
+                    '/static/results/' + resultId + '/frame_0.jpg',
+                    '/static/results/' + resultId + '/frame_50.jpg',
+                    '/static/results/' + resultId + '/frame_100.jpg',
+                    '/static/results/' + resultId + '/frame_150.jpg',
+                    '/static/results/' + resultId + '/frame_200.jpg',
+                    '/static/results/' + resultId + '/frame_250.jpg'
+                ]
+            };
+            
+            // Atualizar elementos da página com os dados
+            document.getElementById('possession-team1').textContent = resultData.metrics.ball_possession.team1 + '%';
+            document.getElementById('possession-team2').textContent = resultData.metrics.ball_possession.team2 + '%';
+            document.getElementById('passes-team1').textContent = resultData.metrics.passes.team1;
+            document.getElementById('passes-team2').textContent = resultData.metrics.passes.team2;
+            document.getElementById('shots-team1').textContent = resultData.metrics.shots.team1;
+            document.getElementById('shots-team2').textContent = resultData.metrics.shots.team2;
+            document.getElementById('goals-team1').textContent = resultData.metrics.goals.team1;
+            document.getElementById('goals-team2').textContent = resultData.metrics.goals.team2;
+            
+            // Configurar o vídeo
+            const videoElement = document.getElementById('output-video');
+            videoElement.src = resultData.output_video;
+            
+            // Adicionar frames à galeria
+            const framesContainer = document.getElementById('frames-container');
+            resultData.charts.forEach((frameSrc, index) => {
+                const colDiv = document.createElement('div');
+                colDiv.className = 'col-md-4';
+                
+                const img = document.createElement('img');
+                img.src = frameSrc;
+                img.className = 'img-fluid rounded frame-thumbnail';
+                img.alt = 'Frame ' + index;
+                img.onclick = function() {
+                    videoElement.currentTime = index * 50 / 30; // Assumindo 30 fps
+                    videoElement.play();
+                };
+                
+                colDiv.appendChild(img);
+                framesContainer.appendChild(colDiv);
+            });
+            
+            // Criar gráfico de posse de bola
+            const possessionCtx = document.getElementById('possessionChart').getContext('2d');
+            const possessionChart = new Chart(possessionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Time 1', 'Time 2'],
+                    datasets: [{
+                        data: [
+                            resultData.metrics.ball_possession.team1,
+                            resultData.metrics.ball_possession.team2
+                        ],
+                        backgroundColor: ['#0d6efd', '#dc3545'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Posse de Bola (%)'
+                        }
+                    }
+                }
+            });
+            
+            // Criar gráfico de métricas
+            const metricsCtx = document.getElementById('metricsChart').getContext('2d');
+            const metricsChart = new Chart(metricsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Passes', 'Chutes', 'Gols'],
+                    datasets: [
+                        {
+                            label: 'Time 1',
+                            data: [
+                                resultData.metrics.passes.team1,
+                                resultData.metrics.shots.team1,
+                                resultData.metrics.goals.team1
+                            ],
+                            backgroundColor: '#0d6efd'
+                        },
+                        {
+                            label: 'Time 2',
+                            data: [
+                                resultData.metrics.passes.team2,
+                                resultData.metrics.shots.team2,
+                                resultData.metrics.goals.team2
+                            ],
+                            backgroundColor: '#dc3545'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Estatísticas do Jogo'
+                        }
+                    }
+                }
+            });
+            
+            // Botão de download do relatório (simulado para o MVP)
+            document.getElementById('download-report').addEventListener('click', function() {
+                alert('Funcionalidade de download de relatório será implementada na versão final.');
+            });
+        });
+    </script>
+</body>
+</html>

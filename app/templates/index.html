@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Vision Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 2rem;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        .upload-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        .features {
+            margin-top: 3rem;
+        }
+        .feature-card {
+            height: 100%;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center">
+            <h1>Football Vision Analytics</h1>
+            <p class="lead">Análise de métricas de futebol com visão computacional</p>
+        </div>
+
+        <div class="upload-container">
+            <h2 class="text-center mb-4">Upload de Vídeo</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="video" class="form-label">Selecione um vídeo de futebol (MP4 ou MOV)</label>
+                    <input class="form-control" type="file" id="video" name="video" accept=".mp4,.mov" required>
+                    <div class="form-text">Tamanho máximo: 500MB</div>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg">Analisar Vídeo</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="features">
+            <h2 class="text-center mb-4">Recursos</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Detecção de Jogadores</h5>
+                            <p class="card-text">Identifica e rastreia automaticamente os jogadores em campo durante toda a partida.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Análise de Posse de Bola</h5>
+                            <p class="card-text">Calcula a posse de bola de cada equipe com base no rastreamento dos jogadores e da bola.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Estatísticas de Jogo</h5>
+                            <p class="card-text">Gera estatísticas detalhadas como passes, chutes a gol, gols e assistências.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Visualização de Dados</h5>
+                            <p class="card-text">Apresenta os resultados em gráficos e tabelas interativas para fácil interpretação.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Vídeo com Marcações</h5>
+                            <p class="card-text">Gera um vídeo com marcações visuais destacando os eventos importantes da partida.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 feature-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Exportação de Resultados</h5>
+                            <p class="card-text">Permite exportar os resultados da análise para uso em outras ferramentas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center mt-5">
+        <div class="container">
+            <p>Football Vision Analytics &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
