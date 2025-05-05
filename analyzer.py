@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import os
 import time
-from .detection import PlayerDetector, BallDetector, FieldDetector
+from detection import PlayerDetector, BallDetector, FieldDetector
 
 class FootballAnalyzer:
     """

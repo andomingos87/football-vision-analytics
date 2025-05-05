@@ -1,4 +1,4 @@
-from app.analyzer import FootballAnalyzer
+from analyzer import FootballAnalyzer
 
 def process_football_video(video_path, results_dir):
     """

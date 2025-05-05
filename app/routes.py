@@ -54,7 +54,7 @@ def analyze_video(filename):
     os.makedirs(results_dir, exist_ok=True)
     
     # Importar o processador de vídeo
-    from .processor import process_football_video
+    from processor import process_football_video
     
     # Iniciar processamento
     # Na versão final, isso seria feito em uma thread separada ou com Celery
