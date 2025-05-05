@@ -3,74 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Processando Vídeo - Football Vision Analytics</title>
+    <title>Processando Vídeo - IA Sport</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            padding-top: 2rem;
-            background-color: #f8f9fa;
+        :root {
+            --dark: #2e2e2e;
+            --gray: #7e8a97;
+            --neon: #39ff14;
+            --neon-soft: rgba(57, 255, 20, 0.1);
+            --neon-glow: 0 0 10px rgba(57, 255, 20, 0.5);
         }
-        .header {
-            background-color: #28a745;
-            color: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: #fff;
+            padding-top: 0;
+            position: relative;
+            min-height: 100vh;
+        }
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(var(--neon-soft) 1px, transparent 1px),
+                radial-gradient(var(--neon-soft) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .hero {
+            padding: 3rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo {
+            margin-bottom: 1.5rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
         }
         .processing-container {
-            background-color: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background-color: rgba(46, 46, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+        }
+        .processing-container h2 {
+            color: #fff;
+            font-weight: 600;
             margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .processing-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
         }
         .progress {
-            height: 2rem;
+            height: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
         }
         .footer {
-            margin-top: 3rem;
-            padding: 1.5rem 0;
-            background-color: #343a40;
-            color: white;
+            margin-top: 5rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(126, 138, 151, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .footer .logo .ia {
+            font-size: 1.8rem;
+        }
+        .footer .logo .sport {
+            font-size: 1.8rem;
         }
         #status-message {
             font-size: 1.2rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            color: var(--neon);
+            font-weight: 500;
         }
         .processing-steps {
-            margin-top: 2rem;
+            margin-top: 2.5rem;
         }
         .step {
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+            background-color: rgba(46, 46, 46, 0.5);
         }
         .step-pending {
-            background-color: #f8f9fa;
-            color: #6c757d;
+            color: var(--gray);
         }
         .step-active {
-            background-color: #cff4fc;
-            color: #055160;
+            background-color: rgba(57, 255, 20, 0.1);
+            color: var(--neon);
+            border-color: var(--neon);
+            box-shadow: var(--neon-glow);
         }
         .step-completed {
-            background-color: #d1e7dd;
-            color: #0f5132;
+            background-color: rgba(57, 255, 20, 0.05);
+            color: var(--neon);
+            border-left: 3px solid var(--neon);
+        }
+        .spinner-border {
+            color: var(--neon) !important;
+            width: 3rem;
+            height: 3rem;
+        }
+        .data-pulse {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--neon-soft) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(20px);
+            animation: pulse 8s infinite alternate;
+        }
+        .data-pulse-1 {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .data-pulse-2 {
+            top: 60%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+            animation-delay: 3s;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-pattern"></div>
+    <div class="data-pulse data-pulse-1"></div>
+    <div class="data-pulse data-pulse-2"></div>
+    
     <div class="container">
-        <div class="header text-center">
-            <h1>Football Vision Analytics</h1>
-            <p class="lead">Processando seu vídeo</p>
+        <div class="hero text-center">
+            <div class="logo">
+                <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 70px;">
+            </div>
+            <p class="tagline">Processando seu vídeo com inteligência artificial</p>
         </div>
 
         <div class="processing-container">
             <h2 class="text-center mb-4">Análise em Andamento</h2>
             
             <div class="progress mb-3">
-                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%"></div>
+                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
             </div>
             
             <p id="status-message" class="text-center">Iniciando processamento do vídeo...</p>
@@ -98,9 +218,14 @@
         </div>
     </div>
 
-    <footer class="footer text-center">
+    <footer class="footer text-center mt-5">
         <div class="container">
-            <p>Football Vision Analytics &copy; 2025</p>
+            <div class="mb-3">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 50px;">
+                </div>
+            </div>
+            <p>&copy; 2025 IA Sport | Tecnologia de Visão Computacional para Análise Esportiva</p>
         </div>
     </footer>
 

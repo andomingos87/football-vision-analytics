@@ -3,45 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados da Análise - Football Vision Analytics</title>
+    <title>Resultados da Análise - IA Sport</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
     <style>
-        body {
-            padding-top: 2rem;
-            background-color: #f8f9fa;
+        :root {
+            --dark: #2e2e2e;
+            --gray: #7e8a97;
+            --neon: #39ff14;
+            --neon-soft: rgba(57, 255, 20, 0.1);
+            --neon-glow: 0 0 10px rgba(57, 255, 20, 0.5);
+            --team1: #39ff14;
+            --team2: #7e8a97;
         }
-        .header {
-            background-color: #28a745;
-            color: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: #fff;
+            padding-top: 0;
+            position: relative;
+            min-height: 100vh;
+        }
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(var(--neon-soft) 1px, transparent 1px),
+                radial-gradient(var(--neon-soft) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .hero {
+            padding: 3rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo {
+            margin-bottom: 1.5rem;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
         }
         .results-container {
-            background-color: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background-color: rgba(46, 46, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+        }
+        .results-container h2 {
+            color: #fff;
+            font-weight: 600;
             margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .results-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
+        }
+        .results-container h3 {
+            color: #fff;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        .results-container h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
         }
         .metric-card {
-            transition: transform 0.3s;
+            background-color: rgba(46, 46, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+            overflow: hidden;
+            transition: all 0.4s ease;
             height: 100%;
         }
         .metric-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(57, 255, 20, 0.2);
+            border-color: var(--neon);
+        }
+        .metric-card .card-body {
+            padding: 1.5rem;
+        }
+        .card-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
         }
         .footer {
-            margin-top: 3rem;
-            padding: 1.5rem 0;
-            background-color: #343a40;
-            color: white;
+            margin-top: 5rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(126, 138, 151, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
         }
         .chart-container {
             position: relative;
             height: 300px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid rgba(126, 138, 151, 0.2);
         }
         .video-container {
             position: relative;
@@ -49,6 +144,9 @@
             height: 0;
             overflow: hidden;
             margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(126, 138, 151, 0.3);
         }
         .video-container video {
             position: absolute;
@@ -56,31 +154,117 @@
             left: 0;
             width: 100%;
             height: 100%;
+            border-radius: 16px;
         }
         .team-1 {
-            color: #0d6efd;
+            color: var(--team1);
+            font-weight: 600;
         }
         .team-2 {
-            color: #dc3545;
+            color: var(--team2);
+            font-weight: 600;
         }
         .frames-gallery {
-            margin-top: 2rem;
+            margin-top: 2.5rem;
         }
         .frame-thumbnail {
             cursor: pointer;
-            transition: transform 0.2s;
-            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         .frame-thumbnail:hover {
             transform: scale(1.05);
+            border-color: var(--neon);
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.3);
+        }
+        .btn-success {
+            background-color: var(--dark);
+            border: 2px solid var(--neon);
+            color: var(--neon);
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: var(--neon-glow);
+        }
+        .btn-success:hover {
+            background-color: var(--neon);
+            border-color: var(--neon);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+        }
+        .btn-outline-success {
+            background-color: transparent;
+            border: 2px solid var(--gray);
+            color: var(--gray);
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-success:hover {
+            background-color: var(--gray);
+            border-color: var(--gray);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        .data-pulse {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--neon-soft) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(20px);
+            animation: pulse 8s infinite alternate;
+        }
+        .data-pulse-1 {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .data-pulse-2 {
+            bottom: 30%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+            animation-delay: 3s;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-pattern"></div>
+    <div class="data-pulse data-pulse-1"></div>
+    <div class="data-pulse data-pulse-2"></div>
+    
     <div class="container">
-        <div class="header text-center">
-            <h1>Football Vision Analytics</h1>
-            <p class="lead">Resultados da Análise</p>
+        <div class="hero text-center">
+            <div class="logo">
+                <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 70px;">
+            </div>
+            <p class="tagline">Resultados da Análise com Inteligência Artificial</p>
         </div>
 
         <div class="results-container">
@@ -190,9 +374,14 @@
         </div>
     </div>
 
-    <footer class="footer text-center">
+    <footer class="footer text-center mt-5">
         <div class="container">
-            <p>Football Vision Analytics &copy; 2025</p>
+            <div class="mb-3">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 50px;">
+                </div>
+            </div>
+            <p>&copy; 2025 IA Sport | Tecnologia de Visão Computacional para Análise Esportiva</p>
         </div>
     </footer>
 

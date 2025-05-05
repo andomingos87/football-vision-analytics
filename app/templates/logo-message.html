@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IA Sport - Logo Files Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .alert {
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>IA Sport - Logo Setup Instructions</h1>
+    
+    <div class="alert alert-success">
+        <strong>Action Required:</strong> Please save the logo images to complete the setup.
+    </div>
+    
+    <p>To use your IA Sport logos in the application, you need to save both the color and white versions of your logo to the static/images folder:</p>
+    
+    <h2>Instructions:</h2>
+    <ol>
+        <li>Save the color version of your logo as <code>logo.png</code> in the following folder:<br>
+        <pre>c:\Users\Anderson Domingos\Documents\Projetos\iasport\software_v1\football-vision-analytics\app\static\images\</pre></li>
+        <li>Save the white version of your logo as <code>logo-white.png</code> in the same folder</li>
+    </ol>
+    
+    <p>After saving both logo files, refresh your application to see them in action.</p>
+    
+    <h2>Logo Usage in the Application</h2>
+    <p>The logos are now referenced in your application in the following locations:</p>
+    <ul>
+        <li>Main hero section: <code>&lt;img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 90px;"&gt;</code></li>
+        <li>Footer section: <code>&lt;img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 50px;"&gt;</code></li>
+    </ul>
+    
+    <p>If you'd like to switch between the color and white versions in different sections, you can update the references accordingly.</p>
+</body>
+</html>

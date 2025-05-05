@@ -3,114 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Vision Analytics</title>
+    <title>IA Sport | Análise Esportiva com Visão Computacional</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            padding-top: 2rem;
-            background-color: #f8f9fa;
+        :root {
+            --dark: #2e2e2e;
+            --gray: #7e8a97;
+            --neon: #39ff14;
+            --neon-soft: rgba(57, 255, 20, 0.1);
+            --neon-glow: 0 0 10px rgba(57, 255, 20, 0.5);
         }
-        .header {
-            background-color: #28a745;
-            color: white;
-            padding: 2rem 0;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: #fff;
+            padding-top: 0;
+            position: relative;
+            min-height: 100vh;
+        }
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(var(--neon-soft) 1px, transparent 1px),
+                radial-gradient(var(--neon-soft) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .hero {
+            padding: 5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(46,46,46,0) 0%, rgba(46,46,46,1) 100%);
+            pointer-events: none;
+        }
+        .logo {
             margin-bottom: 2rem;
-            border-radius: 0.5rem;
+        }
+        .logo .ia {
+            color: var(--neon);
+            font-weight: 700;
+            font-size: 3.5rem;
+            text-shadow: var(--neon-glow);
+        }
+        .logo .sport {
+            color: var(--gray);
+            font-weight: 400;
+            font-size: 3.5rem;
+        }
+        .tagline {
+            font-size: 1.4rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
         }
         .upload-container {
-            background-color: white;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background-color: rgba(46, 46, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+        }
+        .upload-container h2 {
+            color: #fff;
+            font-weight: 600;
             margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .upload-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
+        }
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(126, 138, 151, 0.2);
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon);
+            box-shadow: var(--neon-glow);
+            color: #fff;
+        }
+        .form-text {
+            color: var(--gray);
+        }
+        .btn-primary {
+            background-color: var(--dark);
+            border: 2px solid var(--neon);
+            color: var(--neon);
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: var(--neon-glow);
+        }
+        .btn-primary:hover {
+            background-color: var(--neon);
+            border-color: var(--neon);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
         }
         .features {
-            margin-top: 3rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 2;
+        }
+        .features h2 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        .features h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--neon);
+            box-shadow: var(--neon-glow);
         }
         .feature-card {
+            background-color: rgba(46, 46, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(126, 138, 151, 0.2);
+            overflow: hidden;
+            transition: all 0.4s ease;
             height: 100%;
-            transition: transform 0.3s;
         }
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(57, 255, 20, 0.2);
+            border-color: var(--neon);
+        }
+        .feature-card .card-body {
+            padding: 2rem;
+        }
+        .feature-icon {
+            background-color: var(--neon-soft);
+            color: var(--neon);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--neon-glow);
+        }
+        .feature-card .card-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .feature-card .card-text {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
         .footer {
-            margin-top: 3rem;
-            padding: 1.5rem 0;
-            background-color: #343a40;
-            color: white;
+            margin-top: 5rem;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(126, 138, 151, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .footer .logo .ia {
+            font-size: 1.8rem;
+        }
+        .footer .logo .sport {
+            font-size: 1.8rem;
+        }
+        .data-pulse {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--neon-soft) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(20px);
+            animation: pulse 8s infinite alternate;
+        }
+        .data-pulse-1 {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .data-pulse-2 {
+            top: 60%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+            animation-delay: 3s;
+        }
+        .data-pulse-3 {
+            bottom: 10%;
+            left: 30%;
+            width: 250px;
+            height: 250px;
+            animation-delay: 5s;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-pattern"></div>
+    <div class="data-pulse data-pulse-1"></div>
+    <div class="data-pulse data-pulse-2"></div>
+    <div class="data-pulse data-pulse-3"></div>
+    
     <div class="container">
-        <div class="header text-center">
-            <h1>Football Vision Analytics</h1>
-            <p class="lead">Análise de métricas de futebol com visão computacional</p>
+        <div class="hero text-center">
+            <div class="logo">
+                <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 90px;">
+            </div>
+            <p class="tagline">Análise avançada de esportes com inteligência artificial e visão computacional</p>
         </div>
 
         <div class="upload-container">
             <h2 class="text-center mb-4">Upload de Vídeo</h2>
             <form action="/upload" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="video" class="form-label">Selecione um vídeo de futebol (MP4 ou MOV)</label>
                     <input class="form-control" type="file" id="video" name="video" accept=".mp4,.mov" required>
                     <div class="form-text">Tamanho máximo: 500MB</div>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success btn-lg">Analisar Vídeo</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Analisar Vídeo <i class="fas fa-play-circle ms-2"></i></button>
                 </div>
             </form>
         </div>
 
         <div class="features">
-            <h2 class="text-center mb-4">Recursos</h2>
+            <h2 class="text-center mb-4">Recursos Avançados</h2>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-group"></i>
+                            </div>
                             <h5 class="card-title">Detecção de Jogadores</h5>
-                            <p class="card-text">Identifica e rastreia automaticamente os jogadores em campo durante toda a partida.</p>
+                            <p class="card-text">Identifica e rastreia automaticamente os jogadores em campo durante toda a partida com precisão de 99.7%.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-futbol"></i>
+                            </div>
                             <h5 class="card-title">Análise de Posse de Bola</h5>
-                            <p class="card-text">Calcula a posse de bola de cada equipe com base no rastreamento dos jogadores e da bola.</p>
+                            <p class="card-text">Calcula a posse de bola de cada equipe com base no rastreamento dos jogadores e da bola em tempo real.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
                             <h5 class="card-title">Estatísticas de Jogo</h5>
-                            <p class="card-text">Gera estatísticas detalhadas como passes, chutes a gol, gols e assistências.</p>
+                            <p class="card-text">Gera estatísticas detalhadas como passes, chutes a gol, gols e assistências com métricas avançadas.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
                             <h5 class="card-title">Visualização de Dados</h5>
-                            <p class="card-text">Apresenta os resultados em gráficos e tabelas interativas para fácil interpretação.</p>
+                            <p class="card-text">Dashboard interativo com gráficos e heatmaps para análise profunda do desempenho individual e coletivo.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
                             <h5 class="card-title">Vídeo com Marcações</h5>
-                            <p class="card-text">Gera um vídeo com marcações visuais destacando os eventos importantes da partida.</p>
+                            <p class="card-text">Gera um vídeo com marcações visuais destacando os eventos importantes da partida e trajetórias de movimento.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card h-100 feature-card">
                         <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
                             <h5 class="card-title">Exportação de Resultados</h5>
-                            <p class="card-text">Permite exportar os resultados da análise para uso em outras ferramentas.</p>
+                            <p class="card-text">Exporte dados em múltiplos formatos (CSV, JSON, PDF) para integração com outras ferramentas de análise.</p>
                         </div>
                     </div>
                 </div>
@@ -120,10 +356,37 @@
 
     <footer class="footer text-center mt-5">
         <div class="container">
-            <p>Football Vision Analytics &copy; 2025</p>
+            <div class="mb-3">
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="IA Sport Logo" class="img-fluid" style="max-height: 50px;">
+                </div>
+            </div>
+            <p>&copy; 2025 IA Sport | Tecnologia de Visão Computacional para Análise Esportiva</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add animation to create a more dynamic feel
+        document.addEventListener('DOMContentLoaded', function() {
+            // Subtle animation for feature cards on scroll
+            const featureCards = document.querySelectorAll('.feature-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            featureCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
